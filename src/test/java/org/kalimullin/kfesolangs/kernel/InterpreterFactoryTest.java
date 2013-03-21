@@ -15,10 +15,10 @@ public class InterpreterFactoryTest extends Assert {
 
     @Test
     public void testBrainfuckInterpreter() {
-        Interpreter interpreter = InterpreterFactory.getInterpreter("brainfuck");
-        assertThat(interpreter, instanceOf(BrainfuckInterpreter.class));
-        interpreter = InterpreterFactory.getInterpreter("bRaiNfUck");
-        assertThat(interpreter, instanceOf(BrainfuckInterpreter.class));
+        Interpreter abstractInterpreter = InterpreterFactory.getInterpreter("brainfuck");
+        assertThat(abstractInterpreter, instanceOf(BrainfuckInterpreter.class));
+        abstractInterpreter = InterpreterFactory.getInterpreter("bRaiNfUck");
+        assertThat(abstractInterpreter, instanceOf(BrainfuckInterpreter.class));
     }
 
     @Test

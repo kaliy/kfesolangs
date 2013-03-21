@@ -5,9 +5,9 @@ import org.kalimullin.kfesolangs.kernel.SyntaxError;
 
 import java.io.InputStream;
 
-public class BrainfuckInterpreter implements Interpreter {
+public class BrainfuckInterpreter extends Interpreter {
     @Override
     public void interpret(InputStream inputStream) throws SyntaxError {
-        throw new UnsupportedOperationException("Not implemented yet");
+        throw new UnsupportedOperationException("Not implemented yet!");
     }
 }
