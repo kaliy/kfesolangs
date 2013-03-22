@@ -16,33 +16,63 @@ public class BrainFuckInterpreterTest extends InterpreterTestBase {
 
     @Test
     public void testPlusOperator() {
-        StringBuilder plusBuilder = new StringBuilder();
-        for (int builderCounter = 0; builderCounter < 64; builderCounter++) {
-            plusBuilder.append("+");
-        }
-        plusBuilder.append(".") // output A
-                .append("+")
-                .append(".") // output B
-                .append("+")
-                .append("."); // output C
-        brainfuckAbstractInterpreter.interpret(plusBuilder.toString());
+        String program = getPlusesToChar('A')
+                + "." // output A
+                + "+"
+                + "." // output B
+                + "+"
+                + "."; // output C
+        brainfuckAbstractInterpreter.interpret(program);
         assertEquals("ABC", getStdOut().toString());
     }
 
     @Test
     public void testMinusOperator() {
         //TODO: refactor
-        StringBuilder plusBuilder = new StringBuilder();
-        for (int builderCounter = 0; builderCounter < 64; builderCounter++) {
-            plusBuilder.append("+");
-        }
-        plusBuilder.append(".") // output A
-                .append("+")
-                .append(".") // output B
-                .append("-")
-                .append("."); // output C
-        brainfuckAbstractInterpreter.interpret(plusBuilder.toString());
+        String program = getPlusesToChar('A')
+                + "." // output A
+                + "+"
+                + "." // output B
+                + "-"
+                + "."; // output A
+        brainfuckAbstractInterpreter.interpret(program);
         assertEquals("ABA", getStdOut().toString());
+    }
+
+    @Test
+    public void testPointerSwitching() {
+        String program = getPlusesToChar('C')
+                + ">"
+                + getPlusesToChar('B')
+                + ">"
+                + getPlusesToChar('A')
+                + "."
+                + "<."
+                + "<.";
+        brainfuckAbstractInterpreter.interpret(program);
+        assertEquals("ABC", getStdOut().toString());
+    }
+
+    @Test
+    public void testCycle() {
+        String program = "+++++++" // loop counter
+                + ">"
+                + getPlusesToChar('A')
+                + "<"
+                + "["
+                + ">." // output A
+                + "<-" // decrement loop counter
+                + "]";
+        brainfuckAbstractInterpreter.interpret(program);
+        assertEquals("AAAAAAA", getStdOut().toString());
+    }
+
+    private String getPlusesToChar(char character) {
+        StringBuilder plusesBuilder = new StringBuilder();
+        for (int i = 0; i < (int)character; i++) {
+            plusesBuilder.append("+");
+        }
+        return plusesBuilder.toString();
     }
 
 }
