@@ -54,7 +54,7 @@ public class BrainFuckInterpreterTest extends InterpreterTestBase {
     }
 
     @Test
-    public void testCycle() {
+    public void testLoop() {
         String program = "+++++++" // loop counter
                 + ">"
                 + getPlusesToChar('A')
@@ -65,6 +65,53 @@ public class BrainFuckInterpreterTest extends InterpreterTestBase {
                 + "]";
         brainfuckAbstractInterpreter.interpret(program);
         assertEquals("AAAAAAA", getStdOut().toString());
+    }
+
+    @Test
+    public void testNestedLoop() {
+        String program = "+++" // loop counter = 3
+                + "> +++" // nested loop counter = 3
+                + ">" + getPlusesToChar('A')
+                + ">" + getPlusesToChar('B')
+                + "<<<" + "[->>.>.<<" // print third and fourth pointers ('A' and 'B' initially)
+                + "[->++.>++.<<]" // increment third and fourth them for two and print them
+                + "+++<" // set nested loop counter back to 3
+                + "]";
+        brainfuckAbstractInterpreter.interpret(program);
+        assertEquals("ABCDEFGHGHIJKLMNMNOPQRST", getStdOut().toString());
+    }
+
+    @Test
+    public void testMinusOverflow() {
+        StringBuilder program = new StringBuilder();
+        for (int i = 0; i < 191; i++) {
+            program.append("-");
+        }
+        program.append(".");
+        brainfuckAbstractInterpreter.interpret(program.toString());
+        assertEquals("A", getStdOut().toString());
+    }
+
+    @Test
+    public void testPlusOverflow() {
+        StringBuilder program = new StringBuilder();
+        for (int i = 0; i < 321; i++) {
+            program.append("+");
+        }
+        program.append(".");
+        brainfuckAbstractInterpreter.interpret(program.toString());
+        assertEquals("A", getStdOut().toString());
+    }
+
+    @Test
+    public void testNegativePointerIndex() {
+        String program = "<"
+                + getPlusesToChar('A')
+                + "<"
+                + getPlusesToChar('B')
+                + ">.<.";
+        brainfuckAbstractInterpreter.interpret(program);
+        assertEquals("AB", getStdOut().toString());
     }
 
     private String getPlusesToChar(char character) {
