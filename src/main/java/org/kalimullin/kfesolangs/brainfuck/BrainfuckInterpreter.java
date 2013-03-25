@@ -7,18 +7,21 @@ import org.kalimullin.kfesolangs.kernel.SyntaxError;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 public class BrainfuckInterpreter extends Interpreter {
 
     private List<BrainfuckToken> tokenList;
-    private int currentTokenIndex = -1; //TODO refactor looping
+    private int currentTokenIndex = 0;
     private int currentPointerIndex = 0;
-    private List<Integer> pointerList = new ArrayList<Integer>();
+    private int lastLoopEnterIndex;
+    private List<Byte> pointerList;
 
     public BrainfuckInterpreter() {
         //XXX
-        pointerList.add(0);
+        pointerList = new ArrayList<Byte>();
+        pointerList.add((byte)0); // First default pointer
     }
 
     @Override
@@ -29,8 +32,7 @@ public class BrainfuckInterpreter extends Interpreter {
             // TODO: better error handling
             e.printStackTrace();
         }
-        while (currentTokenIndex < tokenList.size() - 1) {
-            currentTokenIndex++;
+        while (currentTokenIndex < tokenList.size()) {
             switch (tokenList.get(currentTokenIndex)) {
                 case INCREMENT:
                     runIncrementToken();
@@ -41,7 +43,14 @@ public class BrainfuckInterpreter extends Interpreter {
                 case OUTPUT:
                     runOutputToken();
                     break;
+                case NEXT_POINTER:
+                    runNextPointerToken();
+                    break;
+                case PREVIOUS_POINTER:
+                    runPreviousPointerToken();
+                    break;
             }
+            currentTokenIndex++;
         }
     }
 
@@ -62,16 +71,43 @@ public class BrainfuckInterpreter extends Interpreter {
     }
 
     private void runIncrementToken() {
-        pointerList.set(currentPointerIndex, pointerList.get(currentPointerIndex) + 1);
+        pointerList.set(currentPointerIndex, (byte)(pointerList.get(currentPointerIndex) + 1));
     }
 
     private void runDecrementToken() {
-        pointerList.set(currentPointerIndex, pointerList.get(currentPointerIndex) - 1);
+        pointerList.set(currentPointerIndex, (byte)(pointerList.get(currentPointerIndex) - 1));
+    }
+
+    private void runNextPointerToken() {
+        currentPointerIndex++;
+        if (pointerList.size() <= currentPointerIndex || null == pointerList.get(currentPointerIndex)) {
+            pointerList.add(currentPointerIndex, (byte)0);
+        }
+    }
+
+    private void runPreviousPointerToken() {
+        currentPointerIndex--;
+        if (currentPointerIndex < 0 || null == pointerList.get(currentPointerIndex)) {
+            currentPointerIndex = 0;
+            pointerList.add(currentPointerIndex, (byte) 0);
+        }
+    }
+
+    private void runInputToken() {
+
     }
 
     private void runOutputToken() {
         //TODO make output more abstract with OutputStream
-        System.out.print((char)pointerList.get(currentPointerIndex).intValue());
+        System.out.print((char)pointerList.get(currentPointerIndex).byteValue());
+    }
+
+    private void runLoopBeginToken() {
+
+    }
+
+    private void runLoopEndToken() {
+
     }
 
 }
