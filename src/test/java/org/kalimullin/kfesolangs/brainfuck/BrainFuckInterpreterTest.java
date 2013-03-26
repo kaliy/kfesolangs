@@ -1,13 +1,19 @@
 package org.kalimullin.kfesolangs.brainfuck;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.kalimullin.kfesolangs.InterpreterTestBase;
 import org.kalimullin.kfesolangs.kernel.Interpreter;
+import org.kalimullin.kfesolangs.kernel.SyntaxError;
 
 public class BrainFuckInterpreterTest extends InterpreterTestBase {
 
     private Interpreter brainfuckAbstractInterpreter;
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @Before
     public void setUp() {
@@ -105,13 +111,21 @@ public class BrainFuckInterpreterTest extends InterpreterTestBase {
 
     @Test
     public void testNegativePointerIndex() {
-        String program = "<"
+        String program = getPlusesToChar('B')
+                + ">"
                 + getPlusesToChar('A')
-                + "<"
-                + getPlusesToChar('B')
-                + ">.<.";
+                + "<<"
+                + getPlusesToChar('C')
+                + ">>.<.<.";
         brainfuckAbstractInterpreter.interpret(program);
-        assertEquals("AB", getStdOut().toString());
+        assertEquals("ABC", getStdOut().toString());
+    }
+
+    @Test
+    public void testIncorrectLoopSyntaxError() {
+        String program = "+.][";
+        expectedException.expect(SyntaxError.class);
+        brainfuckAbstractInterpreter.interpret(program);
     }
 
     private String getPlusesToChar(char character) {

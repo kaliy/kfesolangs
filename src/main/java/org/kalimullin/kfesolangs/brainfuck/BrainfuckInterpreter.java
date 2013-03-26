@@ -7,7 +7,6 @@ import org.kalimullin.kfesolangs.kernel.SyntaxError;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 
 public class BrainfuckInterpreter extends Interpreter {
@@ -48,6 +47,9 @@ public class BrainfuckInterpreter extends Interpreter {
                     break;
                 case PREVIOUS_POINTER:
                     runPreviousPointerToken();
+                    break;
+                case LOOP_END:
+                    runLoopEndToken();
                     break;
             }
             currentTokenIndex++;
@@ -94,20 +96,33 @@ public class BrainfuckInterpreter extends Interpreter {
     }
 
     private void runInputToken() {
-
+        try {
+            pointerList.set(currentPointerIndex, (byte)System.in.read());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     private void runOutputToken() {
         //TODO make output more abstract with OutputStream
-        System.out.print((char)pointerList.get(currentPointerIndex).byteValue());
-    }
-
-    private void runLoopBeginToken() {
-
+        System.out.print((char)pointerList.get(currentPointerIndex).intValue());
     }
 
     private void runLoopEndToken() {
-
+        if (!Byte.valueOf((byte)0).equals(pointerList.get(currentPointerIndex))) {
+            int loopNestingLevelCounter = 1;
+            while (loopNestingLevelCounter > 0) {
+                currentTokenIndex--;
+                if (currentTokenIndex < 0) {
+                    throw new SyntaxError("There is no loop opening bracket ([) for loop closing bracket (])");
+                }
+                if (BrainfuckToken.LOOP_END.equals(tokenList.get(currentTokenIndex))) {
+                    loopNestingLevelCounter++;
+                } else if (BrainfuckToken.LOOP_BEGIN.equals(tokenList.get(currentTokenIndex))) {
+                    loopNestingLevelCounter--;
+                }
+            }
+        }
     }
 
 }
