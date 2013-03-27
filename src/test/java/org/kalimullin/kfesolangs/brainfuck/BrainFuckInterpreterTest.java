@@ -10,14 +10,14 @@ import org.kalimullin.kfesolangs.kernel.SyntaxError;
 
 public class BrainFuckInterpreterTest extends InterpreterTestBase {
 
-    private Interpreter brainfuckAbstractInterpreter;
+    private Interpreter brainfuckInterpreter;
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
 
     @Before
     public void setUp() {
-        brainfuckAbstractInterpreter = new BrainfuckInterpreter();
+        brainfuckInterpreter = new BrainfuckInterpreter();
     }
 
     @Test
@@ -28,7 +28,7 @@ public class BrainFuckInterpreterTest extends InterpreterTestBase {
                 + "." // output B
                 + "+"
                 + "."; // output C
-        brainfuckAbstractInterpreter.interpret(program);
+        brainfuckInterpreter.interpret(program);
         assertEquals("ABC", getStdOut().toString());
     }
 
@@ -41,7 +41,7 @@ public class BrainFuckInterpreterTest extends InterpreterTestBase {
                 + "." // output B
                 + "-"
                 + "."; // output A
-        brainfuckAbstractInterpreter.interpret(program);
+        brainfuckInterpreter.interpret(program);
         assertEquals("ABA", getStdOut().toString());
     }
 
@@ -55,8 +55,19 @@ public class BrainFuckInterpreterTest extends InterpreterTestBase {
                 + "."
                 + "<."
                 + "<.";
-        brainfuckAbstractInterpreter.interpret(program);
+        brainfuckInterpreter.interpret(program);
         assertEquals("ABC", getStdOut().toString());
+    }
+
+    @Test
+    public void testLoopBeginOperator() {
+        String program = ">"
+                + getPlusesToChar('A')
+                + "<"
+                + "[->-]"
+                + ">.";
+        brainfuckInterpreter.interpret(program);
+        assertEquals("A", getStdOut().toString());
     }
 
     @Test
@@ -69,7 +80,7 @@ public class BrainFuckInterpreterTest extends InterpreterTestBase {
                 + ">." // output A
                 + "<-" // decrement loop counter
                 + "]";
-        brainfuckAbstractInterpreter.interpret(program);
+        brainfuckInterpreter.interpret(program);
         assertEquals("AAAAAAA", getStdOut().toString());
     }
 
@@ -83,7 +94,7 @@ public class BrainFuckInterpreterTest extends InterpreterTestBase {
                 + "[->++.>++.<<]" // increment third and fourth them for two and print them
                 + "+++<" // set nested loop counter back to 3
                 + "]";
-        brainfuckAbstractInterpreter.interpret(program);
+        brainfuckInterpreter.interpret(program);
         assertEquals("ABCDEFGHGHIJKLMNMNOPQRST", getStdOut().toString());
     }
 
@@ -94,7 +105,7 @@ public class BrainFuckInterpreterTest extends InterpreterTestBase {
             program.append("-");
         }
         program.append(".");
-        brainfuckAbstractInterpreter.interpret(program.toString());
+        brainfuckInterpreter.interpret(program.toString());
         assertEquals("A", getStdOut().toString());
     }
 
@@ -105,7 +116,7 @@ public class BrainFuckInterpreterTest extends InterpreterTestBase {
             program.append("+");
         }
         program.append(".");
-        brainfuckAbstractInterpreter.interpret(program.toString());
+        brainfuckInterpreter.interpret(program.toString());
         assertEquals("A", getStdOut().toString());
     }
 
@@ -117,7 +128,7 @@ public class BrainFuckInterpreterTest extends InterpreterTestBase {
                 + "<<"
                 + getPlusesToChar('C')
                 + ">>.<.<.";
-        brainfuckAbstractInterpreter.interpret(program);
+        brainfuckInterpreter.interpret(program);
         assertEquals("ABC", getStdOut().toString());
     }
 
@@ -125,7 +136,7 @@ public class BrainFuckInterpreterTest extends InterpreterTestBase {
     public void testIncorrectLoopSyntaxError() {
         String program = "+.][";
         expectedException.expect(SyntaxError.class);
-        brainfuckAbstractInterpreter.interpret(program);
+        brainfuckInterpreter.interpret(program);
     }
 
     private String getPlusesToChar(char character) {

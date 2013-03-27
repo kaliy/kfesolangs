@@ -9,6 +9,10 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Brainfuck language interpreter.
+ * @see <a href="http://www.muppetlabs.com/~breadbox/bf/">Information about brainfuck language</a>
+ */
 public class BrainfuckInterpreter extends Interpreter {
 
     private List<BrainfuckToken> tokenList;
@@ -18,7 +22,6 @@ public class BrainfuckInterpreter extends Interpreter {
     private List<Byte> pointerList;
 
     public BrainfuckInterpreter() {
-        //XXX
         pointerList = new ArrayList<Byte>();
         pointerList.add((byte)0); // First default pointer
     }
@@ -42,11 +45,17 @@ public class BrainfuckInterpreter extends Interpreter {
                 case OUTPUT:
                     runOutputToken();
                     break;
+                case INPUT:
+                    runInputToken();
+                    break;
                 case NEXT_POINTER:
                     runNextPointerToken();
                     break;
                 case PREVIOUS_POINTER:
                     runPreviousPointerToken();
+                    break;
+                case LOOP_BEGIN:
+                    runLoopBeginToken();
                     break;
                 case LOOP_END:
                     runLoopEndToken();
@@ -105,7 +114,7 @@ public class BrainfuckInterpreter extends Interpreter {
 
     private void runOutputToken() {
         //TODO make output more abstract with OutputStream
-        System.out.print((char)pointerList.get(currentPointerIndex).intValue());
+        System.out.print((char)pointerList.get(currentPointerIndex).byteValue());
     }
 
     private void runLoopEndToken() {
@@ -119,6 +128,20 @@ public class BrainfuckInterpreter extends Interpreter {
                 if (BrainfuckToken.LOOP_END.equals(tokenList.get(currentTokenIndex))) {
                     loopNestingLevelCounter++;
                 } else if (BrainfuckToken.LOOP_BEGIN.equals(tokenList.get(currentTokenIndex))) {
+                    loopNestingLevelCounter--;
+                }
+            }
+        }
+    }
+
+    private void runLoopBeginToken() {
+        if (Byte.valueOf((byte)0).equals(pointerList.get(currentPointerIndex))) {
+            int loopNestingLevelCounter = 1;
+            while (loopNestingLevelCounter > 0) {
+                currentTokenIndex++;
+                if (BrainfuckToken.LOOP_BEGIN.equals(tokenList.get(currentTokenIndex))) {
+                    loopNestingLevelCounter++;
+                } else if (BrainfuckToken.LOOP_END.equals(tokenList.get(currentTokenIndex))) {
                     loopNestingLevelCounter--;
                 }
             }
