@@ -18,7 +18,6 @@ public class BrainfuckInterpreter extends Interpreter {
     private List<BrainfuckToken> tokenList;
     private int currentTokenIndex = 0;
     private int currentPointerIndex = 0;
-    private int lastLoopEnterIndex;
     private List<Byte> pointerList;
 
     public BrainfuckInterpreter() {
@@ -27,9 +26,9 @@ public class BrainfuckInterpreter extends Interpreter {
     }
 
     @Override
-    public void interpret(InputStream inputStream) throws SyntaxError {
+    public void interpret(InputStream source) throws SyntaxError {
         try {
-            tokenList = getTokenList(IOUtils.toCharArray(inputStream));
+            tokenList = getTokenList(IOUtils.toCharArray(source));
         } catch (IOException e) {
             // TODO: better error handling
             e.printStackTrace();
@@ -106,7 +105,7 @@ public class BrainfuckInterpreter extends Interpreter {
 
     private void runInputToken() {
         try {
-            pointerList.set(currentPointerIndex, (byte)System.in.read());
+            pointerList.set(currentPointerIndex, (byte)read().charAt(0));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -114,7 +113,7 @@ public class BrainfuckInterpreter extends Interpreter {
 
     private void runOutputToken() {
         //TODO make output more abstract with OutputStream
-        System.out.print((char)pointerList.get(currentPointerIndex).byteValue());
+        print((char) pointerList.get(currentPointerIndex).byteValue());
     }
 
     private void runLoopEndToken() {

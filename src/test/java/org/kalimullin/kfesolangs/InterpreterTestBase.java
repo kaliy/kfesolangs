@@ -1,35 +1,36 @@
 package org.kalimullin.kfesolangs;
 
-import org.junit.After;
+import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Before;
+import org.kalimullin.kfesolangs.kernel.Interpreter;
+import org.kalimullin.kfesolangs.kernel.InterpreterFactory;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
+import java.io.*;
 
 public class InterpreterTestBase extends Assert {
 
-    private ByteArrayOutputStream stdOut = new ByteArrayOutputStream();
-    private ByteArrayOutputStream stdErr = new ByteArrayOutputStream();
+    private PrintStream printStream;
+    private InputStream inputStream;
+    private OutputStream outputStream;
 
     @Before
     public void setUpOutputStream() {
-        System.setErr(new PrintStream(stdErr));
-        System.setOut(new PrintStream(stdOut));
+        outputStream = new ByteArrayOutputStream();
+        printStream = new PrintStream(outputStream);
+        inputStream = IOUtils.toInputStream("");
     }
 
-    @After
-    public void tearDownOutputStream() {
-        System.setOut(null);
-        System.setErr(null);
+    protected String getOutput() {
+        return outputStream.toString();
     }
 
-    protected ByteArrayOutputStream getStdOut() {
-        return stdOut;
+    protected void sendInput(Interpreter interpreter, String inputString) {
+        interpreter.setInputStream(IOUtils.toInputStream(inputString));
     }
 
-    protected ByteArrayOutputStream getStdErr() {
-        return stdErr;
+    protected Interpreter createInterpreter(String language) {
+        return InterpreterFactory.getInterpreter(language, inputStream, printStream);
     }
 
 }

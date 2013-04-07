@@ -1,12 +1,17 @@
 package org.kalimullin.kfesolangs.brainfuck;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.kalimullin.kfesolangs.InterpreterTestBase;
 import org.kalimullin.kfesolangs.kernel.Interpreter;
+import org.kalimullin.kfesolangs.kernel.InterpreterFactory;
 import org.kalimullin.kfesolangs.kernel.SyntaxError;
+
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 
 public class BrainFuckInterpreterTest extends InterpreterTestBase {
 
@@ -17,7 +22,7 @@ public class BrainFuckInterpreterTest extends InterpreterTestBase {
 
     @Before
     public void setUp() {
-        brainfuckInterpreter = new BrainfuckInterpreter();
+        brainfuckInterpreter = createInterpreter("brainfuck");
     }
 
     @Test
@@ -29,7 +34,7 @@ public class BrainFuckInterpreterTest extends InterpreterTestBase {
                 + "+"
                 + "."; // output C
         brainfuckInterpreter.interpret(program);
-        assertEquals("ABC", getStdOut().toString());
+        assertEquals("ABC", getOutput());
     }
 
     @Test
@@ -42,7 +47,7 @@ public class BrainFuckInterpreterTest extends InterpreterTestBase {
                 + "-"
                 + "."; // output A
         brainfuckInterpreter.interpret(program);
-        assertEquals("ABA", getStdOut().toString());
+        assertEquals("ABA", getOutput());
     }
 
     @Test
@@ -56,7 +61,21 @@ public class BrainFuckInterpreterTest extends InterpreterTestBase {
                 + "<."
                 + "<.";
         brainfuckInterpreter.interpret(program);
-        assertEquals("ABC", getStdOut().toString());
+        assertEquals("ABC", getOutput());
+    }
+
+    @Test
+    public void testInputToken() {
+        sendInput(brainfuckInterpreter, "A");
+        brainfuckInterpreter.interpret(",...");
+        assertEquals("AAA", getOutput());
+    }
+
+    @Test
+    public void testInputMoreThanOneCharacter() {
+        sendInput(brainfuckInterpreter, "ABC");
+        brainfuckInterpreter.interpret(",.");
+        assertEquals("A", getOutput());
     }
 
     @Test
@@ -67,7 +86,7 @@ public class BrainFuckInterpreterTest extends InterpreterTestBase {
                 + "[->-]"
                 + ">.";
         brainfuckInterpreter.interpret(program);
-        assertEquals("A", getStdOut().toString());
+        assertEquals("A", getOutput());
     }
 
     @Test
@@ -81,7 +100,7 @@ public class BrainFuckInterpreterTest extends InterpreterTestBase {
                 + "<-" // decrement loop counter
                 + "]";
         brainfuckInterpreter.interpret(program);
-        assertEquals("AAAAAAA", getStdOut().toString());
+        assertEquals("AAAAAAA", getOutput());
     }
 
     @Test
@@ -95,7 +114,7 @@ public class BrainFuckInterpreterTest extends InterpreterTestBase {
                 + "+++<" // set nested loop counter back to 3
                 + "]";
         brainfuckInterpreter.interpret(program);
-        assertEquals("ABCDEFGHGHIJKLMNMNOPQRST", getStdOut().toString());
+        assertEquals("ABCDEFGHGHIJKLMNMNOPQRST", getOutput());
     }
 
     @Test
@@ -106,7 +125,7 @@ public class BrainFuckInterpreterTest extends InterpreterTestBase {
         }
         program.append(".");
         brainfuckInterpreter.interpret(program.toString());
-        assertEquals("A", getStdOut().toString());
+        assertEquals("A", getOutput());
     }
 
     @Test
@@ -117,7 +136,7 @@ public class BrainFuckInterpreterTest extends InterpreterTestBase {
         }
         program.append(".");
         brainfuckInterpreter.interpret(program.toString());
-        assertEquals("A", getStdOut().toString());
+        assertEquals("A", getOutput());
     }
 
     @Test
@@ -129,7 +148,7 @@ public class BrainFuckInterpreterTest extends InterpreterTestBase {
                 + getPlusesToChar('C')
                 + ">>.<.<.";
         brainfuckInterpreter.interpret(program);
-        assertEquals("ABC", getStdOut().toString());
+        assertEquals("ABC", getOutput());
     }
 
     @Test
