@@ -17,13 +17,14 @@ public class InterpreterFactoryTest extends Assert {
     public void testBrainfuckInterpreter() {
         Interpreter abstractInterpreter = InterpreterFactory.getInterpreter("brainfuck");
         assertThat(abstractInterpreter, instanceOf(BrainfuckInterpreter.class));
-        abstractInterpreter = InterpreterFactory.getInterpreter("bRaiNfUck");
+        abstractInterpreter = InterpreterFactory.getInterpreter(Language.BRAINFUCK);
         assertThat(abstractInterpreter, instanceOf(BrainfuckInterpreter.class));
     }
 
     @Test
     public void testUnrecognizedInterpreter() {
         expectedException.expect(IllegalArgumentException.class);
+        expectedException.expectMessage("Unrecognized language string");
         InterpreterFactory.getInterpreter("bla-bla-bla");
     }
 }

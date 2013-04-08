@@ -1,17 +1,14 @@
 package org.kalimullin.kfesolangs.brainfuck;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.kalimullin.kfesolangs.InterpreterTestBase;
 import org.kalimullin.kfesolangs.kernel.Interpreter;
-import org.kalimullin.kfesolangs.kernel.InterpreterFactory;
+import org.kalimullin.kfesolangs.kernel.Language;
 import org.kalimullin.kfesolangs.kernel.SyntaxError;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
 
 public class BrainFuckInterpreterTest extends InterpreterTestBase {
 
@@ -22,7 +19,7 @@ public class BrainFuckInterpreterTest extends InterpreterTestBase {
 
     @Before
     public void setUp() {
-        brainfuckInterpreter = createInterpreter("brainfuck");
+        brainfuckInterpreter = createInterpreter(Language.BRAINFUCK);
     }
 
     @Test

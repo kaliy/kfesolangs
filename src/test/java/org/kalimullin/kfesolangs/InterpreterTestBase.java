@@ -5,6 +5,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.kalimullin.kfesolangs.kernel.Interpreter;
 import org.kalimullin.kfesolangs.kernel.InterpreterFactory;
+import org.kalimullin.kfesolangs.kernel.Language;
 
 import java.io.*;
 
@@ -29,7 +30,7 @@ public class InterpreterTestBase extends Assert {
         interpreter.setInputStream(IOUtils.toInputStream(inputString));
     }
 
-    protected Interpreter createInterpreter(String language) {
+    protected Interpreter createInterpreter(Language language) {
         return InterpreterFactory.getInterpreter(language, inputStream, printStream);
     }
 

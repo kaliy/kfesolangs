@@ -15,20 +15,35 @@ public class InterpreterFactory {
      * @return Language-specific interpreter
      * @throws IllegalArgumentException if language string is not recognised
      */
-    public static Interpreter getInterpreter(String language) {
+    public static Interpreter getInterpreter(String language) throws IllegalArgumentException {
+        return getInterpreter(getLanguageFromString(language));
+    }
+
+    public static Interpreter getInterpreter(Language language) {
         return getInterpreter(language, System.in, System.out);
     }
 
-    public static Interpreter getInterpreter(String language, InputStream inputStream, PrintStream printStream) {
-        String languageLowerCase = language.toLowerCase();
-        Interpreter interpreter;
-        if (languageLowerCase.equals("brainfuck")) {
-            interpreter = new BrainfuckInterpreter();
-        } else {
-            throw new IllegalArgumentException("Unrecognized language string");
+    public static Interpreter getInterpreter(String language, InputStream inputStream, PrintStream printStream) throws IllegalArgumentException {
+        return getInterpreter(getLanguageFromString(language), inputStream, printStream);
+    }
+
+    public static Interpreter getInterpreter(Language language, InputStream inputStream, PrintStream printStream) {
+        Interpreter interpreter = null;
+        switch (language) {
+            case BRAINFUCK:
+                interpreter = new BrainfuckInterpreter();
+                break;
         }
         interpreter.setInputStream(inputStream);
         interpreter.setPrintStream(printStream);
         return interpreter;
+    }
+
+    private static Language getLanguageFromString(String language) {
+        try {
+            return Language.valueOf(language.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Unrecognized language string");
+        }
     }
 }

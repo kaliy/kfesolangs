@@ -14,6 +14,15 @@ public abstract class Interpreter {
         interpret(IOUtils.toInputStream(source));
     }
 
+    public void interpret(File file) {
+        try {
+            interpret(new FileInputStream(file));
+        } catch (FileNotFoundException e) {
+            printStream.println("File " + file + " was not found");
+            System.exit(1);
+        }
+    }
+
     protected void print(Object object) {
         printStream.print(object);
     }
