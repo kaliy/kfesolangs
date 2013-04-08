@@ -13,12 +13,13 @@ public class Kernel {
         if (0 == args.length || properties.isHelp()) {
             jCommander.usage();
         } else {
-            File sourceFile = new File(properties.getSourceToInterpret().get(0));
+            String source = StringUtils.join(properties.getSourceToInterpret(), " ");
+            File sourceFile = new File(source);
             Interpreter interpreter = InterpreterFactory.getInterpreter(properties.getLanguage());
             if (sourceFile.exists()) {
                 interpreter.interpret(sourceFile);
             } else {
-                interpreter.interpret(StringUtils.join(properties.getSourceToInterpret(), " "));
+                interpreter.interpret(source);
             }
         }
     }
