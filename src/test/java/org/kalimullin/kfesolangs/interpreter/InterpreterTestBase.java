@@ -1,11 +1,9 @@
-package org.kalimullin.kfesolangs;
+package org.kalimullin.kfesolangs.interpreter;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Assert;
 import org.junit.Before;
-import org.kalimullin.kfesolangs.kernel.Interpreter;
-import org.kalimullin.kfesolangs.kernel.InterpreterFactory;
-import org.kalimullin.kfesolangs.kernel.Language;
+import org.kalimullin.kfesolangs.interpreter.language.Language;
 
 import java.io.*;
 

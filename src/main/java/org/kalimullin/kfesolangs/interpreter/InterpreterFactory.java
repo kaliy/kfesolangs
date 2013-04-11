@@ -1,6 +1,8 @@
-package org.kalimullin.kfesolangs.kernel;
+package org.kalimullin.kfesolangs.interpreter;
 
-import org.kalimullin.kfesolangs.brainfuck.BrainfuckInterpreter;
+
+import org.kalimullin.kfesolangs.interpreter.language.Language;
+import org.kalimullin.kfesolangs.interpreter.language.brainfuck.BrainfuckInterpreter;
 
 import java.io.InputStream;
 import java.io.PrintStream;

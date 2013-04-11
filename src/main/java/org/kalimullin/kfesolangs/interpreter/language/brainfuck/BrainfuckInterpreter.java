@@ -1,8 +1,8 @@
-package org.kalimullin.kfesolangs.brainfuck;
+package org.kalimullin.kfesolangs.interpreter.language.brainfuck;
 
 import org.apache.commons.io.IOUtils;
-import org.kalimullin.kfesolangs.kernel.Interpreter;
-import org.kalimullin.kfesolangs.kernel.SyntaxError;
+import org.kalimullin.kfesolangs.interpreter.Interpreter;
+import org.kalimullin.kfesolangs.interpreter.SyntaxError;
 
 import java.io.IOException;
 import java.io.InputStream;

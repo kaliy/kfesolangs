@@ -1,4 +1,4 @@
-package org.kalimullin.kfesolangs.kernel;
+package org.kalimullin.kfesolangs.interpreter;
 
 import org.apache.commons.io.IOUtils;
 

@@ -1,4 +1,4 @@
-package org.kalimullin.kfesolangs.brainfuck;
+package org.kalimullin.kfesolangs.interpreter.language.brainfuck;
 
 /**
  * Brainfuck operator token.

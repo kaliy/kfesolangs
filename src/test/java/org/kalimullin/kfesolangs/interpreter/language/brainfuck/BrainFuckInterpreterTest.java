@@ -1,13 +1,13 @@
-package org.kalimullin.kfesolangs.brainfuck;
+package org.kalimullin.kfesolangs.interpreter.language.brainfuck;
 
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.kalimullin.kfesolangs.InterpreterTestBase;
-import org.kalimullin.kfesolangs.kernel.Interpreter;
-import org.kalimullin.kfesolangs.kernel.Language;
-import org.kalimullin.kfesolangs.kernel.SyntaxError;
+import org.kalimullin.kfesolangs.interpreter.InterpreterTestBase;
+import org.kalimullin.kfesolangs.interpreter.Interpreter;
+import org.kalimullin.kfesolangs.interpreter.language.Language;
+import org.kalimullin.kfesolangs.interpreter.SyntaxError;
 
 
 public class BrainFuckInterpreterTest extends InterpreterTestBase {

@@ -1,10 +1,13 @@
-package org.kalimullin.kfesolangs.kernel;
+package org.kalimullin.kfesolangs.interpreter;
 
 import org.junit.Assert;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.kalimullin.kfesolangs.brainfuck.BrainfuckInterpreter;
+import org.kalimullin.kfesolangs.interpreter.language.brainfuck.BrainfuckInterpreter;
+import org.kalimullin.kfesolangs.interpreter.Interpreter;
+import org.kalimullin.kfesolangs.interpreter.InterpreterFactory;
+import org.kalimullin.kfesolangs.interpreter.language.Language;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 

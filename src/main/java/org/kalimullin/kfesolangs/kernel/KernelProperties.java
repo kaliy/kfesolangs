@@ -23,8 +23,7 @@ public class KernelProperties {
 
     @Parameter(
             names = {"--language", "-l"},
-            description = "Esoteric language to interpret",
-            required = true
+            description = "Esoteric language to interpret"
     )
     private String language;
 

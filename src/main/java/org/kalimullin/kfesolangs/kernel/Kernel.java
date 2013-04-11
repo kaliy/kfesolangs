@@ -2,6 +2,8 @@ package org.kalimullin.kfesolangs.kernel;
 
 import com.beust.jcommander.JCommander;
 import org.apache.commons.lang.StringUtils;
+import org.kalimullin.kfesolangs.interpreter.Interpreter;
+import org.kalimullin.kfesolangs.interpreter.InterpreterFactory;
 
 import java.io.File;
 
