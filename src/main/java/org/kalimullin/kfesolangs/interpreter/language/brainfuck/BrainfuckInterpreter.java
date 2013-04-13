@@ -28,7 +28,7 @@ public class BrainfuckInterpreter extends Interpreter {
     @Override
     public void interpret(InputStream source) throws SyntaxError {
         try {
-            tokenList = getTokenList(IOUtils.toCharArray(source));
+            tokenList = getTokenList(IOUtils.toString(source));
         } catch (IOException e) {
             // TODO: better error handling
             e.printStackTrace();
@@ -66,12 +66,12 @@ public class BrainfuckInterpreter extends Interpreter {
 
     /**
      * Creates token list from character array.
-     * @param chars character array from brainfuck program source code
+     * @param source brainfuck program source code string
      * @return List with BrainfuckToken
      */
-    private List<BrainfuckToken> getTokenList(char[] chars) {
+    protected List<BrainfuckToken> getTokenList(String source) {
         List<BrainfuckToken> tokens = new ArrayList<BrainfuckToken>();
-        for (char c: chars) {
+        for (char c: source.toCharArray()) {
             BrainfuckToken token = BrainfuckToken.fromChar(c);
             if (null != token) {
                 tokens.add(token);
