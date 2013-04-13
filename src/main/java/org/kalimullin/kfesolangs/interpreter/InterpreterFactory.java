@@ -3,6 +3,7 @@ package org.kalimullin.kfesolangs.interpreter;
 
 import org.kalimullin.kfesolangs.interpreter.language.Language;
 import org.kalimullin.kfesolangs.interpreter.language.brainfuck.BrainfuckInterpreter;
+import org.kalimullin.kfesolangs.interpreter.language.brainfuck.ook.OokInterpreter;
 
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -34,6 +35,9 @@ public class InterpreterFactory {
         switch (language) {
             case BRAINFUCK:
                 interpreter = new BrainfuckInterpreter();
+                break;
+            case OOK:
+                interpreter = new OokInterpreter();
                 break;
         }
         interpreter.setInputStream(inputStream);
