@@ -57,8 +57,8 @@ public class OokInterpreterTest extends InterpreterTestBase {
                 + "Ook. Ook?"
                 + getIncrementsTo('A')
                 + "Ook! Ook."
-                + "Ook? Ook.Ook! Ook."
-                + "Ook? Ook.Ook! Ook.";
+                + "Ook? Ook. Ook! Ook."
+                + "Ook? Ook. Ook! Ook.";
         ookInterpreter.interpret(program);
         assertEquals("ABC", getOutput());
     }
@@ -66,14 +66,14 @@ public class OokInterpreterTest extends InterpreterTestBase {
     @Test
     public void testInputToken() {
         sendInput(ookInterpreter, "A");
-        ookInterpreter.interpret("Ook. Ook!Ook! Ook.Ook! Ook.Ook! Ook.");
+        ookInterpreter.interpret("Ook. Ook! Ook! Ook. Ook! Ook. Ook! Ook.");
         assertEquals("AAA", getOutput());
     }
 
     @Test
     public void testInputMoreThanOneCharacter() {
         sendInput(ookInterpreter, "ABC");
-        ookInterpreter.interpret("Ook. Ook!Ook! Ook.");
+        ookInterpreter.interpret("Ook. Ook! Ook! Ook.");
         assertEquals("A", getOutput());
     }
 
@@ -82,21 +82,21 @@ public class OokInterpreterTest extends InterpreterTestBase {
         String program = "Ook. Ook?"
                 + getIncrementsTo('A')
                 + "Ook? Ook."
-                + "Ook! Ook?Ook! Ook!Ook. Ook?Ook! Ook!Ook? Ook!"
-                + "Ook. Ook?Ook! Ook.";
+                + "Ook! Ook? Ook! Ook! Ook. Ook? Ook! Ook! Ook? Ook!"
+                + "Ook. Ook? Ook! Ook.";
         ookInterpreter.interpret(program);
         assertEquals("A", getOutput());
     }
 
     @Test
     public void testLoop() {
-        String program = "Ook. Ook.Ook. Ook.Ook. Ook.Ook. Ook.Ook. Ook.Ook. Ook.Ook. Ook." // loop counter
+        String program = "Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook. Ook." // loop counter
                 + "Ook. Ook?"
                 + getIncrementsTo('A')
                 + "Ook? Ook."
                 + "Ook! Ook?"
-                + "Ook. Ook?Ook! Ook." // output A
-                + "Ook? Ook.Ook! Ook!" // decrement loop counter
+                + "Ook. Ook? Ook! Ook." // output A
+                + "Ook? Ook. Ook! Ook!" // decrement loop counter
                 + "Ook? Ook!";
         ookInterpreter.interpret(program);
         assertEquals("AAAAAAA", getOutput());
@@ -104,13 +104,13 @@ public class OokInterpreterTest extends InterpreterTestBase {
 
     @Test
     public void testNestedLoop() {
-        String program = "Ook. Ook.Ook. Ook.Ook. Ook." // loop counter = 3
-                + "Ook. Ook? Ook. Ook.Ook. Ook.Ook. Ook." // nested loop counter = 3
+        String program = "Ook. Ook. Ook. Ook. Ook. Ook." // loop counter = 3
+                + "Ook. Ook? Ook. Ook. Ook. Ook. Ook. Ook." // nested loop counter = 3
                 + "Ook. Ook?" + getIncrementsTo('A')
                 + "Ook. Ook?" + getIncrementsTo('B')
-                + "Ook? Ook.Ook? Ook.Ook? Ook." + "Ook! Ook?Ook! Ook!Ook. Ook?Ook. Ook?Ook! Ook.Ook. Ook?Ook! Ook.Ook? Ook.Ook? Ook." // print third and fourth pointers ('A' and 'B' initially)
-                + "Ook! Ook?Ook! Ook!Ook. Ook?Ook. Ook.Ook. Ook..Ook. Ook?Ook. Ook.Ook. Ook..Ook? Ook.Ook? Ook.Ook? Ook!" // increment third and fourth them for two and print them
-                + "Ook. Ook.Ook. Ook.Ook. Ook.Ook? Ook." // set nested loop counter back to 3
+                + "Ook? Ook. Ook? Ook. Ook? Ook." + "Ook! Ook? Ook! Ook! Ook. Ook? Ook. Ook? Ook! Ook. Ook. Ook? Ook! Ook. Ook? Ook. Ook? Ook." // print third and fourth pointers ('A' and 'B' initially)
+                + "Ook! Ook? Ook! Ook! Ook. Ook? Ook. Ook.Ook. Ook. Ook! Ook. Ook. Ook? Ook. Ook. Ook. Ook. Ook! Ook. Ook? Ook. Ook? Ook. Ook? Ook!" // increment third and fourth them for two and print them
+                + "Ook. Ook. Ook. Ook. Ook. Ook. Ook? Ook." // set nested loop counter back to 3
                 + "Ook? Ook!";
         ookInterpreter.interpret(program);
         assertEquals("ABCDEFGHGHIJKLMNMNOPQRST", getOutput());
@@ -157,10 +157,38 @@ public class OokInterpreterTest extends InterpreterTestBase {
         ookInterpreter.interpret(program);
     }
 
+    @Test
+    public void testOperatorSeparatedByNewLine() {
+        String program = getIncrementsTo('A') + "Ook!\nOok.\r\nOok!\r\nOok.";
+        ookInterpreter.interpret(program);
+        assertEquals("AA", getOutput());
+    }
+
+    @Test
+    public void testOperatorSeparatedByGarbage() {
+        String program = getIncrementsTo('A') + "Ook!linuxokOok.";
+        ookInterpreter.interpret(program);
+        assertEquals("A", getOutput());
+    }
+
+    @Test
+    public void testOperatorSeparatedBySpace() {
+        String program = getIncrementsTo('A') + "Ook! Ook.";
+        ookInterpreter.interpret(program);
+        assertEquals("A", getOutput());
+    }
+
+    @Test
+    public void testOddOperatorNumber() {
+        String program = "Ook.Ook.Ook.";
+        expectedException.expect(SyntaxError.class);
+        ookInterpreter.interpret(program);
+    }
+
     private String getIncrementsTo(char character) {
         StringBuilder plusesBuilder = new StringBuilder();
         for (int i = 0; i < (int)character; i++) {
-            plusesBuilder.append("Ook. Ook.");
+            plusesBuilder.append("Ook.Ook.");
         }
         return plusesBuilder.toString();
     }
