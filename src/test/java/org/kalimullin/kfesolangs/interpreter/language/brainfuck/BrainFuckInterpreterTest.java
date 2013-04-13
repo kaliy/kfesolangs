@@ -10,7 +10,7 @@ import org.kalimullin.kfesolangs.interpreter.language.Language;
 import org.kalimullin.kfesolangs.interpreter.SyntaxError;
 
 
-public class BrainFuckInterpreterTest extends InterpreterTestBase {
+public class BrainfuckInterpreterTest extends InterpreterTestBase {
 
     private Interpreter brainfuckInterpreter;
 
