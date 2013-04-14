@@ -130,7 +130,7 @@ public class OokInterpreterTest extends InterpreterTestBase {
     @Test
     public void testPlusOverflow() {
         StringBuilder program = new StringBuilder();
-        for (int i = 0; i > 321; i++) {
+        for (int i = 0; i < 321; i++) {
             program.append("Ook. Ook.");
         }
         program.append("Ook! Ook.");
