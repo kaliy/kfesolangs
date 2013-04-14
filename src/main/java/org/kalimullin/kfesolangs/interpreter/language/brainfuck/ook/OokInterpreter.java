@@ -18,7 +18,6 @@ public class OokInterpreter extends BrainfuckInterpreter {
     protected List<BrainfuckToken> getTokenList(String source) {
         checkOperatorNumber(source);
         List<BrainfuckToken> ookTokenList = new ArrayList<BrainfuckToken>();
-        //TODO: throw exception if operator number is odd
         Pattern ookTokenSearchPattern = Pattern.compile("Ook(\\p{Punct}).*?Ook(\\p{Punct})",
                 Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
         Matcher ookTokenSearchMatcher = ookTokenSearchPattern.matcher(source);

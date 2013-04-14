@@ -13,6 +13,7 @@ public class InterpreterFactory {
      * Creating interpreter by specific language. List of available languages:
      * <ul>
      *     <li>brainfuck</li>
+     *     <li>ook</li>
      * </ul>
      * @param language String with specific language
      * @return Language-specific interpreter
