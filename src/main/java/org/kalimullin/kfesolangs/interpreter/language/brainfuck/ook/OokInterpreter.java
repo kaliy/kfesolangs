@@ -4,7 +4,6 @@ import org.kalimullin.kfesolangs.interpreter.language.brainfuck.BrainfuckInterpr
 import org.kalimullin.kfesolangs.interpreter.language.brainfuck.BrainfuckToken;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -17,10 +16,9 @@ public class OokInterpreter extends BrainfuckInterpreter {
     @Override
     protected List<BrainfuckToken> getTokenList(String source) {
         List<BrainfuckToken> ookTokenList = new ArrayList<BrainfuckToken>();
-        //TODO: fix whitespaces and newlines
         //TODO: throw exception if operator number is odd
-        source = source.replaceAll("\\s+", ""); // removing whitespaces
-        Pattern ookTokenSearchPattern = Pattern.compile("Ook(\\p{Punct})\\.*Ook(\\p{Punct})", Pattern.CASE_INSENSITIVE);
+        Pattern ookTokenSearchPattern = Pattern.compile("Ook(\\p{Punct}).*?Ook(\\p{Punct})",
+                Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
         Matcher ookTokenSearchMatcher = ookTokenSearchPattern.matcher(source);
         while (ookTokenSearchMatcher.find()) {
             String tokenString = ookTokenSearchMatcher.group(1) + ookTokenSearchMatcher.group(2);
