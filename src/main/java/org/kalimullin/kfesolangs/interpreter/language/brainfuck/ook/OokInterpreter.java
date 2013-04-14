@@ -1,5 +1,6 @@
 package org.kalimullin.kfesolangs.interpreter.language.brainfuck.ook;
 
+import org.kalimullin.kfesolangs.interpreter.SyntaxError;
 import org.kalimullin.kfesolangs.interpreter.language.brainfuck.BrainfuckInterpreter;
 import org.kalimullin.kfesolangs.interpreter.language.brainfuck.BrainfuckToken;
 
@@ -15,6 +16,7 @@ public class OokInterpreter extends BrainfuckInterpreter {
 
     @Override
     protected List<BrainfuckToken> getTokenList(String source) {
+        checkOperatorNumber(source);
         List<BrainfuckToken> ookTokenList = new ArrayList<BrainfuckToken>();
         //TODO: throw exception if operator number is odd
         Pattern ookTokenSearchPattern = Pattern.compile("Ook(\\p{Punct}).*?Ook(\\p{Punct})",
@@ -40,8 +42,19 @@ public class OokInterpreter extends BrainfuckInterpreter {
                 ookTokenList.add(BrainfuckToken.INPUT);
             }
         }
-
         return ookTokenList;
+    }
+
+    private void checkOperatorNumber(String source) {
+        Pattern ookTokenSearchPattern = Pattern.compile("Ook\\p{Punct}");
+        Matcher ookTokenSearchMatcher = ookTokenSearchPattern.matcher(source);
+        int matchCounter = 0;
+        while (ookTokenSearchMatcher.find()) {
+            matchCounter++;
+        }
+        if (matchCounter % 2 != 0) {
+            throw new SyntaxError("Source code should have even \"Ook\" operators number");
+        }
     }
 
 }
