@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>kfesolangs</groupId>
     <artifactId>kfesolangs</artifactId>
-    <version>0.1</version>
+    <version>0.2</version>
     <packaging>jar</packaging>
     <build>
         <defaultGoal>install</defaultGoal>

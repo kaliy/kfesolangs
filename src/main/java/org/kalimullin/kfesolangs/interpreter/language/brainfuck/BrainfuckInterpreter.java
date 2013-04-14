@@ -112,7 +112,6 @@ public class BrainfuckInterpreter extends Interpreter {
     }
 
     private void runOutputToken() {
-        //TODO make output more abstract with OutputStream
         print((char) pointerList.get(currentPointerIndex).byteValue());
     }
 
