@@ -25,41 +25,54 @@ public class BrainfuckInterpreter extends Interpreter {
         pointerList.add((byte)0); // First default pointer
     }
 
+    /**
+     * This method will be invoked before interpreting source code
+     */
+    protected void beforeInterpret(String sourceCode) {
+    }
+
+    protected void runToken(BrainfuckToken token) {
+        switch (token) {
+            case INCREMENT:
+                runIncrementToken();
+                break;
+            case DECREMENT:
+                runDecrementToken();
+                break;
+            case OUTPUT:
+                runOutputToken();
+                break;
+            case INPUT:
+                runInputToken();
+                break;
+            case NEXT_POINTER:
+                runNextPointerToken();
+                break;
+            case PREVIOUS_POINTER:
+                runPreviousPointerToken();
+                break;
+            case LOOP_BEGIN:
+                runLoopBeginToken();
+                break;
+            case LOOP_END:
+                runLoopEndToken();
+                break;
+        }
+    }
+
     @Override
     public void interpret(InputStream source) throws SyntaxError {
+        String sourceCode = "";
         try {
-            tokenList = getTokenList(IOUtils.toString(source));
+            sourceCode = IOUtils.toString(source);
         } catch (IOException e) {
             // TODO: better error handling
             e.printStackTrace();
         }
+        beforeInterpret(sourceCode);
+        tokenList = getTokenList(sourceCode);
         while (currentTokenIndex < tokenList.size()) {
-            switch (tokenList.get(currentTokenIndex)) {
-                case INCREMENT:
-                    runIncrementToken();
-                    break;
-                case DECREMENT:
-                    runDecrementToken();
-                    break;
-                case OUTPUT:
-                    runOutputToken();
-                    break;
-                case INPUT:
-                    runInputToken();
-                    break;
-                case NEXT_POINTER:
-                    runNextPointerToken();
-                    break;
-                case PREVIOUS_POINTER:
-                    runPreviousPointerToken();
-                    break;
-                case LOOP_BEGIN:
-                    runLoopBeginToken();
-                    break;
-                case LOOP_END:
-                    runLoopEndToken();
-                    break;
-            }
+            runToken(tokenList.get(currentTokenIndex));
             currentTokenIndex++;
         }
     }

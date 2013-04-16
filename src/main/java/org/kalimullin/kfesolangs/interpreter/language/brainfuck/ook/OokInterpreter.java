@@ -16,7 +16,6 @@ public class OokInterpreter extends BrainfuckInterpreter {
 
     @Override
     protected List<BrainfuckToken> getTokenList(String source) {
-        checkOperatorNumber(source);
         List<BrainfuckToken> ookTokenList = new ArrayList<BrainfuckToken>();
         Pattern ookTokenSearchPattern = Pattern.compile("Ook(\\p{Punct}).*?Ook(\\p{Punct})",
                 Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
@@ -44,7 +43,8 @@ public class OokInterpreter extends BrainfuckInterpreter {
         return ookTokenList;
     }
 
-    private void checkOperatorNumber(String source) {
+    @Override
+    protected void beforeInterpret(String source) {
         Pattern ookTokenSearchPattern = Pattern.compile("Ook\\p{Punct}");
         Matcher ookTokenSearchMatcher = ookTokenSearchPattern.matcher(source);
         int matchCounter = 0;
